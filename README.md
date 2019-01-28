@@ -64,15 +64,16 @@ The run.sh script provides an easy way to search hyper-parameters:
 **Speed**
 
 The KGE models usually take about half an hour to run 10000 steps on a single GeForce GTX 1080 Ti GPU with default configuration. And these models need different max_steps to converge on different data sets:
-|Dataset| FB15k | FB15k-237 | wn18 | wn18rr | Countries S* |
-|--|--|--|--|--|--|
+
+| Dataset | FB15k | FB15k-237 | wn18 | wn18rr | Countries S* |
+|-------------|-------------|-------------|-------------|-------------|-------------|
 |MAX_STEPS| 150000 | 100000 | 80000 | 80000 | 40000 | 
 |TIME| 9 h | 6 h | 4 h | 4 h | 2 h | 
 
 **Results of the RotatE model**
 
-|| FB15k | FB15k-237 | wn18 | wn18rr |
-|--|--|--|--|--|--|
+| Dataset | FB15k | FB15k-237 | wn18 | wn18rr |
+|-------------|-------------|-------------|-------------|-------------|
 | MRR | .797 ± .001 | .949 ± .000 |.337 ± .001 |.477 ± .001
 | MR | 40 | 177 | 309 | 3340 |
 | HITS@1 | .746 | .241 | .944 | .428 |
