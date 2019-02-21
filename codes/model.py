@@ -198,7 +198,7 @@ class KGEModel(nn.Module):
         return score
 
     def RotatE(self, head, relation, tail, mode):
-        pi = 3.14159262358979323846
+        pi = 3.14159265358979323846
         
         re_head, im_head = torch.chunk(head, 2, dim=2)
         re_tail, im_tail = torch.chunk(tail, 2, dim=2)
