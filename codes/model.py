@@ -75,7 +75,7 @@ class KGEModel(nn.Module):
         In the 'head-batch' or 'tail-batch' mode, sample consists two part.
         The first part is usually the positive sample.
         And the second part is the entities in the negative samples.
-        Becuase negative samples and positive samples usually share two elements 
+        Because negative samples and positive samples usually share two elements 
         in their triple ((head, relation) or (relation, tail)).
         '''
 
@@ -267,7 +267,7 @@ class KGEModel(nn.Module):
         negative_score = model((positive_sample, negative_sample), mode=mode)
 
         if args.negative_adversarial_sampling:
-            #In self-negative sampling, we do not apply back-propagation on the sampling weight
+            #In self-adversarial sampling, we do not apply back-propagation on the sampling weight
             negative_score = (F.softmax(negative_score * args.adversarial_temperature, dim = 1).detach() 
                               * F.logsigmoid(-negative_score)).sum(dim = 1)
         else:
@@ -278,8 +278,8 @@ class KGEModel(nn.Module):
         positive_score = F.logsigmoid(positive_score).squeeze(dim = 1)
 
         if args.uni_weight:
-            positive_sample_loss = positive_score.mean()
-            negative_sample_loss = negative_score.mean()
+            positive_sample_loss = - positive_score.mean()
+            negative_sample_loss = - negative_score.mean()
         else:
             positive_sample_loss = - (subsampling_weight * positive_score).sum()/subsampling_weight.sum()
             negative_sample_loss = - (subsampling_weight * negative_score).sum()/subsampling_weight.sum()
