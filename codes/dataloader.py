@@ -59,8 +59,8 @@ class TrainDataset(Dataset):
         
         negative_sample = np.concatenate(negative_sample_list)[:self.negative_sample_size]
 
-        negative_sample = torch.from_numpy(negative_sample)
-        
+        negative_sample = torch.LongTensor(negative_sample)
+
         positive_sample = torch.LongTensor(positive_sample)
             
         return positive_sample, negative_sample, subsampling_weight, self.mode
