@@ -9,6 +9,7 @@ import json
 import logging
 import os
 import random
+import unicodedata
 
 import numpy as np
 import torch
@@ -123,7 +124,7 @@ def read_triple(file_path, entity2id, relation2id):
     triples = []
     with open(file_path) as fin:
         for line in fin:
-            h, r, t = line.strip().split('\t')
+             h, r, t = map(lambda x: x.strip(), unicodedata.normalize('NFKC', line).split('\t'))
             triples.append((entity2id[h], relation2id[r], entity2id[t]))
     return triples
 
@@ -160,12 +161,12 @@ def log_metrics(mode, step, metrics):
         
 def main(args):
     if (not args.do_train) and (not args.do_valid) and (not args.do_test):
-        raise ValueError('one of train/val/test mode must be choosed.')
+        raise ValueError('one of train/val/test mode must be chosen.')
     
     if args.init_checkpoint:
         override_config(args)
     elif args.data_path is None:
-        raise ValueError('one of init_checkpoint/data_path must be choosed.')
+        raise ValueError('one of init_checkpoint/data_path must be chosen.')
 
     if args.do_train and args.save_path is None:
         raise ValueError('Where do you want to save your trained model?')
@@ -179,13 +180,13 @@ def main(args):
     with open(os.path.join(args.data_path, 'entities.dict')) as fin:
         entity2id = dict()
         for line in fin:
-            eid, entity = line.strip().split('\t')
+            eid, entity = map(lambda x: x.strip(), unicodedata.normalize('NFKC', line).split('\t'))
             entity2id[entity] = int(eid)
 
     with open(os.path.join(args.data_path, 'relations.dict')) as fin:
         relation2id = dict()
         for line in fin:
-            rid, relation = line.strip().split('\t')
+            rid, relation = map(lambda x: x.strip(), unicodedata.normalize('NFKC', line).split('\t'))
             relation2id[relation] = int(rid)
     
     # Read regions for Countries S* datasets
