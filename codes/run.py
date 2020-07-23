@@ -9,7 +9,6 @@ import json
 import logging
 import os
 import random
-import unicodedata
 
 import numpy as np
 import torch
@@ -124,7 +123,10 @@ def read_triple(file_path, entity2id, relation2id):
     triples = []
     with open(file_path) as fin:
         for line in fin:
-            h, r, t = map(lambda x: x.strip(), unicodedata.normalize('NFKC', line).split('\t'))
+            # The entity/relation dict have the element names at the end, when loading them
+            # the entire line is stripped, removing any trailing spaces. As such, we need
+            # to strip each element individually here as well.
+            h, r, t = map(str.strip, line.split('\t'))
             triples.append((entity2id[h], relation2id[r], entity2id[t]))
     return triples
 
@@ -180,13 +182,13 @@ def main(args):
     with open(os.path.join(args.data_path, 'entities.dict')) as fin:
         entity2id = dict()
         for line in fin:
-            eid, entity = map(lambda x: x.strip(), unicodedata.normalize('NFKC', line).split('\t'))
+            eid, entity = line.strip().split('\t')
             entity2id[entity] = int(eid)
 
     with open(os.path.join(args.data_path, 'relations.dict')) as fin:
         relation2id = dict()
         for line in fin:
-            rid, relation = map(lambda x: x.strip(), unicodedata.normalize('NFKC', line).split('\t'))
+            rid, relation = line.strip().split('\t')
             relation2id[relation] = int(rid)
     
     # Read regions for Countries S* datasets
