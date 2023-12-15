@@ -2,4 +2,5 @@ checkpoint
 *.npy
 *.log
 models
-data/wikidata_5m
+data/wikidata_5m/*.dict
+data/wikidata_5m/*.json
